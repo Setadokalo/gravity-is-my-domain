@@ -1,0 +1,70 @@
+[gd_scene load_steps=6 format=3 uid="uid://duqcwyutjhy68"]
+
+[ext_resource type="Script" uid="uid://c7bu22d20h3ft" path="res://Gravity/GravitySphere.gd" id="1_ig7tw"]
+[ext_resource type="Script" uid="uid://cyrlfano52bb1" path="res://self_drawing_circle.gd" id="2_1bvp3"]
+[ext_resource type="Script" uid="uid://i10cjjshucqm" path="res://GravityRigidBody.gd" id="2_h2yge"]
+[ext_resource type="Texture2D" uid="uid://cugh1ww6c07qm" path="res://ball.png" id="3_h2yge"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_h2yge"]
+radius = 16.0
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+visible = false
+position = Vector2(526, 393)
+polygon = PackedVector2Array(-1024, 200, 1024, 200, 1024, 400, -1024, 400)
+uv = PackedVector2Array(-1024, 200, 1024, 200, 1024, 400, -1024, 400)
+
+[node name="GravitySphere" type="Node2D" parent="."]
+position = Vector2(314, 527)
+script = ExtResource("1_ig7tw")
+surface_radius = 399.9999999999988
+falloff_length = 79.99999999999976
+falloff_start = 149.99999999999957
+gravity_strength = 979.999999999997
+
+[node name="StaticBody2D2" type="StaticBody2D" parent="GravitySphere"]
+rotation = -5.4890604
+script = ExtResource("2_1bvp3")
+radius = 400
+fill_fraction = 0.8936799999999974
+metadata/_edit_lock_ = true
+
+[node name="GravitySphere2" type="Node2D" parent="."]
+position = Vector2(-591, 781)
+script = ExtResource("1_ig7tw")
+surface_radius = 399.9999999999988
+falloff_length = 79.99999999999976
+falloff_start = 149.99999999999957
+priority = 1
+gravity_strength = 979.999999999997
+
+[node name="StaticBody2D" type="StaticBody2D" parent="GravitySphere2"]
+rotation = -2.073451
+script = ExtResource("2_1bvp3")
+radius = 400
+fill_fraction = 0.8936799999999974
+metadata/_edit_lock_ = true
+
+[node name="RigidBody2D" type="RigidBody2D" parent="."]
+position = Vector2(25, -135)
+collision_layer = 2147483649
+linear_velocity = Vector2(0, 400)
+script = ExtResource("2_h2yge")
+
+[node name="Sprite2D" type="Sprite2D" parent="RigidBody2D"]
+texture = ExtResource("3_h2yge")
+metadata/_edit_lock_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D"]
+shape = SubResource("CircleShape2D_h2yge")
+metadata/_edit_lock_ = true
+
+[node name="Camera2D" type="Camera2D" parent="RigidBody2D"]
+drag_horizontal_enabled = true
+drag_vertical_enabled = true
+metadata/_edit_lock_ = true
+
+[node name="GravityDebug" type="Line2D" parent="RigidBody2D"]
+width = 1.0

@@ -1,8 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://duqcwyutjhy68"]
+[gd_scene load_steps=5 format=3 uid="uid://duqcwyutjhy68"]
 
 [ext_resource type="Script" uid="uid://c7bu22d20h3ft" path="res://Gravity/GravitySphere.gd" id="1_ig7tw"]
 [ext_resource type="Script" uid="uid://cyrlfano52bb1" path="res://self_drawing_circle.gd" id="2_1bvp3"]
-[ext_resource type="Script" uid="uid://i10cjjshucqm" path="res://GravityRigidBody.gd" id="2_h2yge"]
 [ext_resource type="Texture2D" uid="uid://cugh1ww6c07qm" path="res://ball.png" id="3_h2yge"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_h2yge"]
@@ -20,8 +19,8 @@ uv = PackedVector2Array(-1024, 200, 1024, 200, 1024, 400, -1024, 400)
 position = Vector2(314, 527)
 script = ExtResource("1_ig7tw")
 surface_radius = 399.9999999999988
-falloff_length = 79.99999999999976
 falloff_start = 149.99999999999957
+falloff_length = 79.99999999999976
 gravity_strength = 979.999999999997
 
 [node name="StaticBody2D2" type="StaticBody2D" parent="GravitySphere"]
@@ -35,8 +34,8 @@ metadata/_edit_lock_ = true
 position = Vector2(-591, 781)
 script = ExtResource("1_ig7tw")
 surface_radius = 399.9999999999988
-falloff_length = 79.99999999999976
 falloff_start = 149.99999999999957
+falloff_length = 79.99999999999976
 priority = 1
 gravity_strength = 979.999999999997
 
@@ -51,7 +50,6 @@ metadata/_edit_lock_ = true
 position = Vector2(25, -135)
 collision_layer = 2147483649
 linear_velocity = Vector2(0, 400)
-script = ExtResource("2_h2yge")
 
 [node name="Sprite2D" type="Sprite2D" parent="RigidBody2D"]
 texture = ExtResource("3_h2yge")

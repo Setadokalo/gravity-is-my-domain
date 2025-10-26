@@ -4,6 +4,8 @@ extends CharacterBody2D
 
 var local_gravity := Vector2(0, 0)
 
+var mass := 10
+
 func _ready() -> void:
 	local_gravity = GravityApplicator.default_gravity
 
@@ -28,7 +30,12 @@ func _physics_process(delta: float) -> void:
 		local_velocity.y = -500
 
 	velocity = local_velocity.rotated(global_rotation)
+	var old_velocity := velocity
 	move_and_slide()
+	for c_idx in get_slide_collision_count():
+		var collision: KinematicCollision2D = get_slide_collision(c_idx)
+		if collision.get_collider() is RigidBody2D:
+			(collision.get_collider() as RigidBody2D).apply_impulse(old_velocity * 0.2, collision.get_position() - collision.get_collider().global_position)
 
 ## Requested movement direction in local space.
 ## Vertical movement won't be used much, I expect.

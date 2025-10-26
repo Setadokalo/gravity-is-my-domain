@@ -34,6 +34,6 @@ func _init() -> void:
 	remake()
 
 func remake() -> void:
-	var circle = MathLib.create_rounded_box(size, thickness)
+	var circle = MathLib.create_rounded_box(size + Vector2(thickness, thickness), thickness / 2)
 	_polygon.polygon = circle
 	_collision_shape.polygon = circle

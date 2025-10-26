@@ -1,13 +1,14 @@
-[gd_scene load_steps=11 format=3 uid="uid://duqcwyutjhy68"]
+[gd_scene load_steps=13 format=3 uid="uid://duqcwyutjhy68"]
 
 [ext_resource type="Script" uid="uid://dofpj2isor0jb" path="res://Gravity/GravityBox.gd" id="1_7mycd"]
 [ext_resource type="Script" uid="uid://c7bu22d20h3ft" path="res://Gravity/GravitySphere.gd" id="1_ig7tw"]
+[ext_resource type="Texture2D" uid="uid://ohnhagbtkp57" path="res://background.png" id="1_kek77"]
 [ext_resource type="Script" uid="uid://cyrlfano52bb1" path="res://Misc/self_drawing_circle.gd" id="2_1bvp3"]
 [ext_resource type="Script" uid="uid://crusy4x8jda7l" path="res://Misc/self_creating_box.gd" id="2_272bh"]
 [ext_resource type="Texture2D" uid="uid://cugh1ww6c07qm" path="res://ball.png" id="3_h2yge"]
 [ext_resource type="Script" uid="uid://bjqjfvppn12li" path="res://Characters/PlayerCharacter.gd" id="4_lquwl"]
-[ext_resource type="Texture2D" uid="uid://xatcanvf3fwf" path="res://Characters/Player/Body.png" id="5_lquwl"]
 [ext_resource type="Script" uid="uid://b4ppryj4ulo6x" path="res://Misc/DebugLabel.gd" id="8_5vw27"]
+[ext_resource type="SpriteFrames" uid="uid://0i3b38027kjp" path="res://Characters/Player/Body.aseprite" id="8_kek77"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_h2yge"]
 radius = 16.0
@@ -15,7 +16,17 @@ radius = 16.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_7mycd"]
 radius = 16.0
 
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_5vw27"]
+
 [node name="Node2D" type="Node2D"]
+
+[node name="Parallax2D" type="Parallax2D" parent="."]
+scroll_scale = Vector2(0.1, 0.1)
+repeat_size = Vector2(640, 360)
+repeat_times = 3
+
+[node name="Background" type="Sprite2D" parent="Parallax2D"]
+texture = ExtResource("1_kek77")
 
 [node name="Polygon2D" type="Polygon2D" parent="."]
 visible = false
@@ -26,21 +37,17 @@ uv = PackedVector2Array(-1024, 200, 1024, 200, 1024, 400, -1024, 400)
 [node name="GravityBox" type="Node2D" parent="."]
 position = Vector2(-1233, 189)
 script = ExtResource("1_7mycd")
-surface_size = Vector2(150, 350)
+surface_size = Vector2(150, 300)
 falloff_start = 200.0
 falloff_length = 80.0
 priority = 2
 gravity_strength = 979.999999999997
 metadata/_custom_type_script = "uid://dofpj2isor0jb"
 
-[node name="Polygon2D" type="Polygon2D" parent="GravityBox"]
-visible = false
-polygon = PackedVector2Array(-126, -220, 106, -205, 115, 206, -111, 212)
-
 [node name="StaticBody2D" type="StaticBody2D" parent="GravityBox"]
 script = ExtResource("2_272bh")
-size = Vector2(300, 500)
-thickness = 100
+size = Vector2(150, 300)
+thickness = 195
 metadata/_edit_lock_ = true
 
 [node name="GravitySphere" type="Node2D" parent="."]
@@ -62,7 +69,6 @@ metadata/_edit_lock_ = true
 [node name="GravitySphere2" type="Node2D" parent="."]
 position = Vector2(-591, 781)
 script = ExtResource("1_ig7tw")
-surface_radius = 399.9999999999988
 falloff_start = 149.99999999999957
 falloff_length = 79.99999999999976
 priority = 1
@@ -71,7 +77,7 @@ gravity_strength = 979.999999999997
 [node name="StaticBody2D" type="StaticBody2D" parent="GravitySphere2"]
 rotation = -2.073451
 script = ExtResource("2_1bvp3")
-radius = 400
+radius = 200
 fill_fraction = 0.8936799999999974
 metadata/_edit_lock_ = true
 
@@ -92,15 +98,16 @@ metadata/_edit_lock_ = true
 width = 1.0
 
 [node name="PlayerCharacter" type="CharacterBody2D" parent="."]
-position = Vector2(-1219, -78)
+position = Vector2(83, 491)
 collision_layer = 2147483649
 floor_max_angle = 1.134464
 floor_snap_length = 100.0
 script = ExtResource("4_lquwl")
 metadata/_custom_type_script = "uid://bjqjfvppn12li"
 
-[node name="Body" type="Sprite2D" parent="PlayerCharacter"]
-texture = ExtResource("5_lquwl")
+[node name="Body" type="AnimatedSprite2D" parent="PlayerCharacter"]
+sprite_frames = ExtResource("8_kek77")
+animation = &"run"
 metadata/_edit_lock_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerCharacter"]
@@ -114,6 +121,7 @@ rotation_smoothing_enabled = true
 metadata/_edit_lock_ = true
 
 [node name="Line2D" type="Line2D" parent="PlayerCharacter"]
+visible = false
 top_level = true
 width = 1.0
 
@@ -134,3 +142,24 @@ layout_mode = 2
 script = ExtResource("8_5vw27")
 property = "player_grav_influence"
 override_target = "/root/GravityApplicator"
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(-459, 1944)
+shape = SubResource("WorldBoundaryShape2D_5vw27")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(1203, 603)
+rotation = -1.5707964
+shape = SubResource("WorldBoundaryShape2D_5vw27")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(-2235, 699)
+rotation = 1.5707964
+shape = SubResource("WorldBoundaryShape2D_5vw27")
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(-602, -630)
+rotation = 3.1415927
+shape = SubResource("WorldBoundaryShape2D_5vw27")

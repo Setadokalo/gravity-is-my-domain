@@ -1,10 +1,18 @@
-[gd_scene load_steps=5 format=3 uid="uid://duqcwyutjhy68"]
+[gd_scene load_steps=11 format=3 uid="uid://duqcwyutjhy68"]
 
+[ext_resource type="Script" uid="uid://dofpj2isor0jb" path="res://Gravity/GravityBox.gd" id="1_7mycd"]
 [ext_resource type="Script" uid="uid://c7bu22d20h3ft" path="res://Gravity/GravitySphere.gd" id="1_ig7tw"]
-[ext_resource type="Script" uid="uid://cyrlfano52bb1" path="res://self_drawing_circle.gd" id="2_1bvp3"]
+[ext_resource type="Script" uid="uid://cyrlfano52bb1" path="res://Misc/self_drawing_circle.gd" id="2_1bvp3"]
+[ext_resource type="Script" uid="uid://crusy4x8jda7l" path="res://Misc/self_creating_box.gd" id="2_272bh"]
 [ext_resource type="Texture2D" uid="uid://cugh1ww6c07qm" path="res://ball.png" id="3_h2yge"]
+[ext_resource type="Script" uid="uid://bjqjfvppn12li" path="res://Characters/PlayerCharacter.gd" id="4_lquwl"]
+[ext_resource type="Texture2D" uid="uid://xatcanvf3fwf" path="res://Characters/Player/Body.png" id="5_lquwl"]
+[ext_resource type="Script" uid="uid://b4ppryj4ulo6x" path="res://Misc/DebugLabel.gd" id="8_5vw27"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_h2yge"]
+radius = 16.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_7mycd"]
 radius = 16.0
 
 [node name="Node2D" type="Node2D"]
@@ -15,8 +23,29 @@ position = Vector2(526, 393)
 polygon = PackedVector2Array(-1024, 200, 1024, 200, 1024, 400, -1024, 400)
 uv = PackedVector2Array(-1024, 200, 1024, 200, 1024, 400, -1024, 400)
 
+[node name="GravityBox" type="Node2D" parent="."]
+position = Vector2(-1233, 189)
+script = ExtResource("1_7mycd")
+surface_size = Vector2(150, 350)
+falloff_start = 200.0
+falloff_length = 80.0
+priority = 2
+gravity_strength = 979.999999999997
+metadata/_custom_type_script = "uid://dofpj2isor0jb"
+
+[node name="Polygon2D" type="Polygon2D" parent="GravityBox"]
+visible = false
+polygon = PackedVector2Array(-126, -220, 106, -205, 115, 206, -111, 212)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="GravityBox"]
+script = ExtResource("2_272bh")
+size = Vector2(300, 500)
+thickness = 100
+metadata/_edit_lock_ = true
+
 [node name="GravitySphere" type="Node2D" parent="."]
 position = Vector2(314, 527)
+rotation = 1.7697638
 script = ExtResource("1_ig7tw")
 surface_radius = 399.9999999999988
 falloff_start = 149.99999999999957
@@ -59,10 +88,49 @@ metadata/_edit_lock_ = true
 shape = SubResource("CircleShape2D_h2yge")
 metadata/_edit_lock_ = true
 
-[node name="Camera2D" type="Camera2D" parent="RigidBody2D"]
-drag_horizontal_enabled = true
-drag_vertical_enabled = true
-metadata/_edit_lock_ = true
-
 [node name="GravityDebug" type="Line2D" parent="RigidBody2D"]
 width = 1.0
+
+[node name="PlayerCharacter" type="CharacterBody2D" parent="."]
+position = Vector2(-1219, -78)
+collision_layer = 2147483649
+floor_max_angle = 1.134464
+floor_snap_length = 100.0
+script = ExtResource("4_lquwl")
+metadata/_custom_type_script = "uid://bjqjfvppn12li"
+
+[node name="Body" type="Sprite2D" parent="PlayerCharacter"]
+texture = ExtResource("5_lquwl")
+metadata/_edit_lock_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerCharacter"]
+shape = SubResource("CircleShape2D_7mycd")
+metadata/_edit_lock_ = true
+
+[node name="Camera2D" type="Camera2D" parent="PlayerCharacter"]
+ignore_rotation = false
+limit_enabled = false
+rotation_smoothing_enabled = true
+metadata/_edit_lock_ = true
+
+[node name="Line2D" type="Line2D" parent="PlayerCharacter"]
+top_level = true
+width = 1.0
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer"]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Label" type="Label" parent="CanvasLayer/VBoxContainer" node_paths=PackedStringArray("target")]
+layout_mode = 2
+script = ExtResource("8_5vw27")
+target = NodePath("../../../PlayerCharacter")
+property = "is_on_floor()"
+
+[node name="Label2" type="Label" parent="CanvasLayer/VBoxContainer"]
+layout_mode = 2
+script = ExtResource("8_5vw27")
+property = "player_grav_influence"
+override_target = "/root/GravityApplicator"
